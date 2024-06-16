@@ -51,8 +51,8 @@ class MovieServiceApplicationTests  {
 		movie.setActors(List.of("prabha","bujji","brami"));
 
 		var response = mockMvc.perform(post("/movies/create")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(movie)));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(movie)));
 
 		response.andDo(print())
 				.andExpect(status().isOk())
@@ -73,7 +73,7 @@ class MovieServiceApplicationTests  {
 		Movie movie1 = movieRepository.save(movie);
 
 		var response = mockMvc.perform(get("/movies/"+movie1.getId())
-				 				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON));
 		response.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(movie1.getId().intValue())))
@@ -121,5 +121,4 @@ class MovieServiceApplicationTests  {
 
 		assertFalse(movieRepository.findById(movie1.getId()).isPresent());
 	}
-
 }
