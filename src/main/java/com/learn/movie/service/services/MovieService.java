@@ -1,5 +1,7 @@
 package com.learn.movie.service.services;
 
+import com.learn.movie.service.exception.DataNotFoundException;
+import com.learn.movie.service.exception.InvalidDataException;
 import com.learn.movie.service.model.Movie;
 import com.learn.movie.service.repository.MovieRepository;
 import jakarta.transaction.Transactional;
@@ -16,18 +18,18 @@ public class MovieService {
 //CRUD
     public Movie create(Movie movie){
         if(movie == null){
-            throw new RuntimeException(">> Empty Object");
+            throw new InvalidDataException(">> Empty Object to create it ::: ");
         }
         return movieRepository.save(movie);
     }
 
     public Movie read(Long id){
-        return movieRepository.findById(id).orElseThrow(() -> new RuntimeException(">> Not present in DataBase ::: "));
+        return movieRepository.findById(id).orElseThrow(() -> new DataNotFoundException(">> Not present in DataBase to read it ::: "));
     }
 
     public Movie update(Movie movie){
         if(movie == null || movie.getId() == null){
-            throw new RuntimeException(">> Movie empty ::: ");
+            throw new InvalidDataException(">> Movie empty ::: ");
         }
         if(movieRepository.existsById(movie.getId())){
             Movie exmovie= movieRepository.getReferenceById(movie.getId());
@@ -36,7 +38,7 @@ public class MovieService {
             exmovie.setActors(movie.getActors());
             return movieRepository.save(exmovie);
         }else{
-            throw new RuntimeException(">>> Not present in database ::: ");
+            throw new DataNotFoundException(">>> Not present in database to update it ::: ");
         }
     }
 
@@ -45,7 +47,7 @@ public class MovieService {
             movieRepository.deleteById(id);
             return "Movie deleted";
         }else{
-            throw new RuntimeException(">>> Movie Not found to delete it ");
+            throw new DataNotFoundException(">>> Movie Not found to delete it ");
         }
     }
 }

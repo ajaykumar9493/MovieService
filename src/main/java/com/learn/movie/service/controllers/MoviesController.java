@@ -1,7 +1,9 @@
 package com.learn.movie.service.controllers;
 
+import com.learn.movie.service.exception.InvalidDataException;
 import com.learn.movie.service.model.Movie;
 import com.learn.movie.service.services.MovieService;
+import jdk.jfr.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ public class MoviesController {
     @Autowired
     private MovieService movieService;
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getmovie(@PathVariable Long id){
+    public ResponseEntity<?> getmovie(@PathVariable Long id){
         logger.info(">> inside Get movie :::");
         Movie movie=movieService.read(id);
         return ResponseEntity.ok(movie);
@@ -26,11 +28,11 @@ public class MoviesController {
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie){
         logger.info(">> inside Post create movie ::: ");
         Movie createdmovie = movieService.create(movie);
-        return ResponseEntity.ok(movie);
+        return ResponseEntity.ok(createdmovie);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie){
+    public ResponseEntity<Movie> updateMovie(@RequestBody(required = false) Movie movie){
         logger.info(">> inside put update movie ::: ");
        Movie updateMovie = movieService.update(movie);
        return ResponseEntity.ok(updateMovie);
