@@ -33,8 +33,8 @@ public class MovieService {
         }
         if(movieRepository.existsById(movie.getId())){
             Movie exmovie= movieRepository.getReferenceById(movie.getId());
-            exmovie.setActors(movie.getActors());
             exmovie.setName(movie.getName());
+            exmovie.setDirector(movie.getDirector());
             exmovie.setActors(movie.getActors());
             return movieRepository.save(exmovie);
         }else{
